@@ -7,7 +7,7 @@ use Map\Laravel\Models\Query\RouteQuery;
 use Map\Laravel\Resources\Route;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
-use Map\Models\Coordinate;
+use Map\Laravel\Models\Coordinate;
 
 class Yandex implements Provider
 {
@@ -44,20 +44,22 @@ class Yandex implements Provider
     public function route(RouteQuery $query): ?Route
     {
         try {
+            $way_points = $query->getThroughPoints()
+                ->transform(function ($coordinate) { return $coordinate->getLatitude() . ',' . $coordinate->getLongitude(); })
+                ->implode('|');
+
             $response = (new Client())->get(self::ROUTE_URL, [
-                'apikey' => $this->key,
-                'waypoints' => $query->getThroughPoints()
-                    ->transform(function ($coordinate) {
-                        return $coordinate->getLatitude() . ',' . $coordinate->getLongitude();
-                    })
-                    ->implode('|')
+                'query' => [
+                    'apikey' => $this->key,
+                    'waypoints' => $way_points
+                ]
             ]);
             $data = json_decode((string)$response->getBody(), true);
         } catch (\Exception $e) {
             throw InvalidServerResponse::create('Provider "' . $this->getName() . '" could not build route: "' . $query->__toString() . '".');
         }
 
-        if (!empty($response['errors'])) {
+        if (!empty($data['errors'])) {
             return null;
         }
 

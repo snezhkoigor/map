@@ -29,7 +29,7 @@ final class Route
      */
     public function __construct($provided_by, array $points = [])
     {
-        $this->points = coolect($points);
+        $this->points = collect($points);
         $this->provided_by = $provided_by;
     }
 
