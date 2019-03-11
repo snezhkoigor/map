@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Map\Models;
+namespace Map\Laravel\Models;
 
 use Map\Laravel\Exceptions\InvalidArgument;
 
 /**
- * Class Coordinates
+ * Class Coordinate
  * @package Map\Models
  */
 final class Coordinate

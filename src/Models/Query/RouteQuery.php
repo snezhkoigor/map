@@ -2,7 +2,7 @@
 
 namespace Map\Laravel\Models\Query;
 
-use Map\Models\Coordinate;
+use Map\Laravel\Models\Coordinate;
 use Illuminate\Support\Collection;
 
 /**

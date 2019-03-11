@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Map\Laravel\Models\Query;
 
-use Map\Models\Coordinate;
+use Map\Laravel\Models\Coordinate;
 
 /**
  * Interface Query
