@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Map\Laravel\Models\Query;
 
 use Map\Laravel\Models\Coordinate;
+use Illuminate\Support\Collection;
 
 /**
  * Interface Query
@@ -20,9 +21,9 @@ interface Query
     public function withThroughPoint(Coordinate $point);
 
     /**
-     * @return Coordinate[]
+     * @return Collection
      */
-    public function getThroughPoints(): array;
+    public function getThroughPoints(): Collection;
 
     /**
      * @return string

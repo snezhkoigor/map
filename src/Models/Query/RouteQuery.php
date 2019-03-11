@@ -37,9 +37,9 @@ class RouteQuery implements Query
     }
 
     /**
-     * @return Coordinate[]
+     * @return Collection
      */
-    public function getThroughPoints(): array
+    public function getThroughPoints(): Collection
     {
         return $this->through_points;
     }
