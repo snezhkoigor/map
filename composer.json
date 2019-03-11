@@ -1,0 +1,33 @@
+{
+    "name": "snezhkoigor/map",
+    "description": "A development package for all map providers",
+    "keywords": ["map", "laravel"],
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Snezhko",
+            "email": "i.s.sergeevich@yandex.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.1",
+        "guzzlehttp/guzzle": "~6.0",
+        "illuminate/support": "5.0 - 5.8",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Map\\Laravel\\": "src/"
+        }
+    },
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Map\\Laravel\\MapServiceProvider"
+            ]
+        }
+    }
+}
