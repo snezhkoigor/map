@@ -7,14 +7,14 @@
 ## Installation
 1. Install the package via composer:
   ```sh
-  composer require snezhkoigor/geocoding
+  composer require snezhkoigor/map
   ```
 2. **If you are running Laravel 5.5 (the package will be auto-discovered), skip
   this step.** Find the `providers` array key in `config/app.php` and register
-  the **Geocoding Service Provider**:
+  the **Map Service Provider**:
   ```php
   // 'providers' => [
-      Geocoding\Laravel\GeocodingServiceProvider::class,
+      Map\Laravel\MapServiceProvider::class,
   // ];
   ```
   
@@ -28,7 +28,7 @@ However, you are free to add or remove providers as needed, both inside the
  
 ```
 <?php
-use Geocoding\Laravel\Providers\DaData;
+use Map\Laravel\Providers\Yandex;
 
 return [
     /*
@@ -38,34 +38,24 @@ return [
     |
     */
     'providers' => [
-        DaData::class => [
-            'token' => env('DADATA_TOKEN', ''),
-            'proxy' => env('DADATA_PROXY_IP', null)
+        Yandex::class => [
+            'key' => env('YANDEX_ROUTE_KEY', ''),
+            'proxy' => env('YANDEX_PROXY_IP', null)
         ]
     ]
 ];
 ```
 
 ### Supported Providers
-1. DaData
+1. Yandex
 
 ### Customization
 If you would like to make changes to the default configuration, publish and
  edit the configuration file:
 ```sh
-php artisan vendor:publish --provider="Geocoding\Laravel\GeocodingServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Map\Laravel\MapServiceProvider" --tag="config"
 ```
 
 ## Usage
-The service provider initializes the `geocoding` service, accessible via the
- facade `Geocoding::...` or the application helper `app('geocoding')->...`.
-
-#### Geocoding of Address
-```php
-app('geocoding')->geocode((\Geocoding\Laravel\Models\Query\GeocodeQuery::create('Санкт-Петербург')));
-```
-
-#### Suggest and get Collection of Addresses
-```php
-app('geocoding')->suggest((\Geocoding\Laravel\Models\Query\SuggestQuery::create('перво')));
-```
+The service provider initializes the `map` service, accessible via the
+ facade `Map::...` or the application helper `app('map')->...`.
