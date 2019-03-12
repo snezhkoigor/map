@@ -10,10 +10,10 @@ use Map\Laravel\Models\Coordinate;
 use Map\Laravel\Models\TravelMode;
 
 /**
- * Class Yandex
+ * Class Tomtom
  * @package Map\Laravel\Providers
  */
-class Yandex implements Provider
+class Tomtom implements Provider
 {
     /**
      * @var
@@ -33,7 +33,7 @@ class Yandex implements Provider
     /**
      * Базовый url для автозаполнения
      */
-    const ROUTE_URL = 'https://api.routing.yandex.net/{version}/route';
+    const ROUTE_URL = 'https://api.tomtom.com/routing/{version}/calculateRoute/{way_points}?/json';
 
     /**
      * Yandex constructor.
@@ -57,17 +57,23 @@ class Yandex implements Provider
         try {
             $way_points = $query->getThroughPoints()
                 ->transform(function ($coordinate) { return $coordinate->getLatitude() . ',' . $coordinate->getLongitude(); })
-                ->implode('|');
+                ->implode(':');
+
+            $query = [
+                'key' => $this->route_key,
+                'traffic' => $query->getTraffic(),
+                'language' => $query->getLocale(),
+                'travelMode' => $query->getTravelMode(),
+                'routeType' => $query->getRouteType()
+            ];
+            if ($query->getAvoidTollsRoads()) {
+                $query['avoid'] = 'tollRoads';
+            }
 
             $response = (new Client())->get(
-                str_replace([ '{version}' ], [ $this->routing_api_version ], self::ROUTE_URL),
+                str_replace([ '{version}', '{way_points}' ], [ $this->routing_api_version, $way_points ], self::ROUTE_URL),
                 [
-                    'query' => [
-                        'apikey' => $this->route_key,
-                        'waypoints' => $way_points,
-                        'mode' => $this->mapTravelMode($query),
-                        'avoid_tolls' => $query->getAvoidTollsRoads()
-                    ],
+                    'query' => $query,
                     'proxy' => $this->proxy
                 ]
             );
@@ -108,8 +114,11 @@ class Yandex implements Provider
     {
         switch ($query->getTravelMode()) {
             case TravelMode::TRAVEL_MODE_CAR:
+                return 'car';
+                break;
+
             case TravelMode::TRAVEL_MODE_TRUCK:
-                return 'driving';
+                return 'truck';
                 break;
         }
     }
