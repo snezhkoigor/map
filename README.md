@@ -59,3 +59,21 @@ php artisan vendor:publish --provider="Map\Laravel\MapServiceProvider" --tag="co
 ## Usage
 The service provider initializes the `map` service, accessible via the
  facade `Map::...` or the application helper `app('map')->...`.
+ 
+# Dumpers
+Package provides dumpers that aim to transform a some object in standard formats.
+
+### Supported Dumpers
+1. Keyhole Markup Language (KML). [Keyhole Markup Language](http://en.wikipedia.org/wiki/Keyhole_Markup_Language) is an XML notation for expressing geographic annotation and visualization within Internet-based, two-dimensional maps and three-dimensional Earth browsers.
+
+```
+$way = app('map')->route(
+    (new RouteQuery())
+        ->withThroughPoint(new Coordinate(56.991837, 60.477136))
+        ->withThroughPoint(new Coordinate(56.907375, 60.780160))
+        ->withThroughPoint(new Coordinate(58.201698, 68.253762))
+        ->withAvoidTollsRoads()
+);
+
+$kml = (new Kml())->dumpRoute('name', $way)
+```
