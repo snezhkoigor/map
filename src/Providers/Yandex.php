@@ -4,7 +4,6 @@ namespace Map\Laravel\Providers;
 
 use Map\Laravel\Exceptions\InvalidServerResponse;
 use Map\Laravel\Models\Query\RouteQuery;
-use Map\Laravel\Resources\Route;
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use Map\Laravel\Models\Coordinate;
@@ -39,9 +38,9 @@ class Yandex implements Provider
 
     /**
      * @param RouteQuery $query
-     * @return Route|null
+     * @return Collection
      */
-    public function route(RouteQuery $query): ?Route
+    public function route(RouteQuery $query): Collection
     {
         try {
             $way_points = $query->getThroughPoints()
@@ -60,7 +59,7 @@ class Yandex implements Provider
         }
 
         if (!empty($data['errors'])) {
-            return null;
+            return collect([]);
         }
 
         $result = [];
@@ -72,7 +71,7 @@ class Yandex implements Provider
             }
         }
 
-        return \count($result) ? new Route($this->getName(), $result) : null;
+        return collect($result);
     }
 
     /**

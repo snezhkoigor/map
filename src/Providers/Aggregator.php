@@ -3,7 +3,6 @@
 namespace Map\Laravel\Providers;
 
 use Map\Laravel\Models\Query\RouteQuery;
-use Map\Laravel\Resources\Route;
 use Illuminate\Support\Collection;
 use Map\Laravel\Exceptions\InvalidServerResponse;
 
@@ -16,19 +15,19 @@ class Aggregator implements Provider
 
     /**
      * @param RouteQuery $query
-     * @return Route|null
+     * @return Collection
      */
-    public function route(RouteQuery $query): ?Route
+    public function route(RouteQuery $query): Collection
     {
         foreach ($this->providers as $provider) {
             try {
                 $result = $provider->route($query);
 
-                if ($result instanceof Route) {
+                if (!$result->isEmpty()) {
                     return $result;
                 }
             } catch (\Throwable $e) {
-                throw InvalidServerResponse::create('Provider "' . $provider->getName() . '" could not geocode address: "' . $query->getText() . '".');
+                throw InvalidServerResponse::create('Provider "' . $provider->getName() . '" could not build route: "' . $query->__toString() . '".');
             }
         }
 
