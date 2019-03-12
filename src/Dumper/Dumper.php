@@ -7,9 +7,6 @@ use Illuminate\Support\Collection;
 interface Dumper
 {
     /**
-     * Dumps an `Location` object as a string representation of
-     * the implemented format.
-     *
      * @param string $name
      * @param Collection $coordinates
      *

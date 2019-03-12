@@ -13,8 +13,8 @@ class Kml implements Dumper
      */
     public function dumpRoute(string $name, Collection $coordinates): string
     {
-        $points = $coordinates->getThroughPoints()
-            ->transform(function ($coordinate) { return $coordinate->getLatitude() . ',' . $coordinate->getLongitude(); })
+        $points = $coordinates
+            ->transform(function ($coordinate) { return $coordinate->getLongitude() . ',' . $coordinate->getLatitude(); })
             ->implode(' ');
 
         $kml = <<<'KML'
@@ -25,18 +25,8 @@ class Kml implements Dumper
         <description>KML вариант маршрута по переданным точкам.</description>
         <Style id="yellowLineGreenPoly">
             <LineStyle>
-                <color>
-                    7f00ffff
-                </color>
-                <width>
-                    4
-                </width>
+                <width>4</width>
             </LineStyle>
-            <PolyStyle>
-                <color>
-                    7f00ff00
-                </color>
-            </PolyStyle>
         </Style>
         <Placemark>
             <name><![CDATA[%s]]></name>

@@ -77,8 +77,8 @@ final class Coordinate
     public function toArray(): array
     {
         return [
-            $this->getLongitude(),
-            $this->getLatitude()
+            $this->getLatitude(),
+            $this->getLongitude()
         ];
     }
 }
