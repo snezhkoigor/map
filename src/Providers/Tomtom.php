@@ -33,7 +33,7 @@ class Tomtom implements Provider
     /**
      * Базовый url для автозаполнения
      */
-    const ROUTE_URL = 'https://api.tomtom.com/routing/{version}/calculateRoute/{way_points}?/json';
+    const ROUTE_URL = 'https://api.tomtom.com/routing/{version}/calculateRoute/{way_points}/json';
 
     /**
      * Yandex constructor.
@@ -59,21 +59,21 @@ class Tomtom implements Provider
                 ->transform(function ($coordinate) { return $coordinate->getLatitude() . ',' . $coordinate->getLongitude(); })
                 ->implode(':');
 
-            $query = [
+            $request_data = [
                 'key' => $this->route_key,
-                'traffic' => $query->getTraffic(),
+                'traffic' => json_encode($query->getTraffic()),
                 'language' => $query->getLocale(),
-                'travelMode' => $query->getTravelMode(),
+                'travelMode' => $this->mapTravelMode($query),
                 'routeType' => $query->getRouteType()
             ];
             if ($query->getAvoidTollsRoads()) {
-                $query['avoid'] = 'tollRoads';
+                $request_data['avoid'] = 'tollRoads';
             }
 
             $response = (new Client())->get(
                 str_replace([ '{version}', '{way_points}' ], [ $this->routing_api_version, $way_points ], self::ROUTE_URL),
                 [
-                    'query' => $query,
+                    'query' => $request_data,
                     'proxy' => $this->proxy
                 ]
             );
@@ -82,16 +82,14 @@ class Tomtom implements Provider
             throw InvalidServerResponse::create('Provider "' . $this->getName() . '" could not build route: "' . $query->__toString() . '".');
         }
 
-        if (!empty($data['errors'])) {
+        if (!empty($data['error']) || empty($data['routes'][0]['legs'])) {
             return collect([]);
         }
 
         $result = [];
-        foreach ($data['route']['legs'] as $leg) {
-            foreach ($leg['steps'] as $step) {
-                foreach ($step['polyline']['points'] as $point) {
-                    $result[] = new Coordinate($point[0], $point[1]);
-                }
+        foreach ($data['routes'][0]['legs'] as $leg) {
+            foreach ($leg['points'] as $point) {
+                $result[] = new Coordinate($point['latitude'], $point['longitude']);
             }
         }
 
@@ -103,7 +101,7 @@ class Tomtom implements Provider
      */
     public function getName(): string
     {
-        return 'Yandex.ru';
+        return 'TomTom.com';
     }
 
     /**
