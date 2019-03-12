@@ -13,11 +13,15 @@ use Map\Laravel\Exceptions\InvalidArgument;
 final class Coordinate
 {
     /**
+     * Широта
+     *
      * @var float
      */
     private $latitude;
 
     /**
+     * Долгота
+     *
      * @var float
      */
     private $longitude;
