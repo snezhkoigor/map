@@ -74,15 +74,23 @@ final class Coordinate
     }
 
     /**
-     * Returns the coordinates as a tuple
+     * Returns the coordinates
      *
+     * @param boolean $as_tuple
      * @return array
      */
-    public function toArray(): array
+    public function toArray($as_tuple = false): array
     {
+        if ($as_tuple) {
+            return [
+                $this->getLatitude(),
+                $this->getLongitude()
+            ];
+        }
+
         return [
-            $this->getLatitude(),
-            $this->getLongitude()
+            'latitude' => $this->getLatitude(),
+            'longitude' => $this->getLongitude()
         ];
     }
 }
