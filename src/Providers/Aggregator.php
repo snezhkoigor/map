@@ -31,7 +31,7 @@ class Aggregator implements Provider
             }
         }
 
-        return null;
+        return collect([]);
     }
 
     /**

@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use Map\Laravel\Models\Coordinate;
 use Map\Laravel\Models\TravelMode;
+use Map\Laravel\Models\Url;
 
 /**
  * Class Tomtom
@@ -71,7 +72,7 @@ class Tomtom implements Provider
             }
 
             $response = (new Client())->get(
-                str_replace([ '{version}', '{way_points}' ], [ $this->routing_api_version, $way_points ], self::ROUTE_URL),
+                (new Url(self::ROUTE_URL))->replace('{version}', $this->routing_api_version)->replace('{way_points}', $way_points)->getUrl(),
                 [
                     'query' => $request_data,
                     'proxy' => $this->proxy

@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Collection;
 use Map\Laravel\Models\Coordinate;
 use Map\Laravel\Models\TravelMode;
+use Map\Laravel\Models\Url;
 
 /**
  * Class Yandex
@@ -60,7 +61,7 @@ class Yandex implements Provider
                 ->implode('|');
 
             $response = (new Client())->get(
-                str_replace([ '{version}' ], [ $this->routing_api_version ], self::ROUTE_URL),
+                (new Url(self::ROUTE_URL))->replace('{version}', $this->routing_api_version)->getUrl(),
                 [
                     'query' => [
                         'apikey' => $this->route_key,
