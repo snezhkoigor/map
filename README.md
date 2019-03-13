@@ -60,6 +60,24 @@ php artisan vendor:publish --provider="Map\Laravel\MapServiceProvider" --tag="co
 The service provider initializes the `map` service, accessible via the
  facade `Map::...` or the application helper `app('map')->...`.
  
+# Build route
+```
+$way = app('map')->route(
+    (new RouteQuery())
+        ->withThroughPoint(new Coordinate(56.991837, 60.477136))
+        ->withThroughPoint(new Coordinate(56.907375, 60.780160))
+        ->withThroughPoint(new Coordinate(58.201698, 68.253762))
+);
+```
+
+Result would be Collection of Coordinate class:
+```
+{
+    latitude: 
+    longitude:
+}
+```
+
 # Dumpers
 Package provides dumpers that aim to transform a some object in standard formats.
 
