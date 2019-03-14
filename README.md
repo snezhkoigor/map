@@ -72,21 +72,24 @@ $way = app('map')->route(
 
 Result would be Collection of Coordinate class:
 ```
-[
-    {
-        latitude: 
-        longitude:
-    },
-    {
-        latitude: 
-        longitude:
-    },
-    ...
-    {
-        latitude: 
-        longitude:
-    }
-]
+{
+    'provided_by': ...,
+    'way_points': [
+        {
+            latitude: 
+            longitude:
+        },
+        {
+            latitude: 
+            longitude:
+        },
+        ...
+        {
+            latitude: 
+            longitude:
+        }
+    ]
+}
 ```
 
 # Dumpers

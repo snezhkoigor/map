@@ -5,6 +5,7 @@ namespace Map\Laravel\Providers;
 use Map\Laravel\Models\Query\RouteQuery;
 use Illuminate\Support\Collection;
 use Map\Laravel\Exceptions\InvalidServerResponse;
+use Map\Laravel\Resources\Route;
 
 class Aggregator implements Provider
 {
@@ -15,15 +16,15 @@ class Aggregator implements Provider
 
     /**
      * @param RouteQuery $query
-     * @return Collection
+     * @return null|Route
      */
-    public function route(RouteQuery $query): Collection
+    public function route(RouteQuery $query): ?Route
     {
         foreach ($this->providers as $provider) {
             try {
                 $result = $provider->route($query);
 
-                if (!$result->isEmpty()) {
+                if ($result instanceof Route && $result->getWayPoints()->count()) {
                     return $result;
                 }
             } catch (\Throwable $e) {
@@ -31,7 +32,7 @@ class Aggregator implements Provider
             }
         }
 
-        return collect([]);
+        return null;
     }
 
     /**

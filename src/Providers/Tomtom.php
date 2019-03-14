@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Map\Laravel\Models\Coordinate;
 use Map\Laravel\Models\TravelMode;
 use Map\Laravel\Models\Url;
+use Map\Laravel\Resources\Route;
 
 /**
  * Class Tomtom
@@ -51,9 +52,9 @@ class Tomtom implements Provider
 
     /**
      * @param RouteQuery $query
-     * @return Collection
+     * @return null|Route
      */
-    public function route(RouteQuery $query): Collection
+    public function route(RouteQuery $query): ?Route
     {
         try {
             $way_points = $query->getThroughPoints()
@@ -84,7 +85,7 @@ class Tomtom implements Provider
         }
 
         if (!empty($data['error']) || empty($data['routes'][0]['legs'])) {
-            return collect([]);
+            return null;
         }
 
         $result = [];
@@ -94,7 +95,7 @@ class Tomtom implements Provider
             }
         }
 
-        return collect($result);
+        return new Route($this->getName(), $result);
     }
 
     /**

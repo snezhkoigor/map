@@ -6,6 +6,7 @@ namespace Map\Laravel\Providers;
 
 use Illuminate\Support\Collection;
 use Map\Laravel\Models\Query\RouteQuery;
+use Map\Laravel\Resources\Route;
 
 /**
  * Interface Provider
@@ -16,11 +17,11 @@ interface Provider
     /**
      * @param RouteQuery $query
      *
-     * @return Collection
+     * @return null|Route
      *
      * @throws \Exception
      */
-    public function route(RouteQuery $query): Collection;
+    public function route(RouteQuery $query): ?Route;
 
     /**
      * Returns the provider's name.

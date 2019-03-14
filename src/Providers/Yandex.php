@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Map\Laravel\Models\Coordinate;
 use Map\Laravel\Models\TravelMode;
 use Map\Laravel\Models\Url;
+use Map\Laravel\Resources\Route;
 
 /**
  * Class Yandex
@@ -51,9 +52,9 @@ class Yandex implements Provider
 
     /**
      * @param RouteQuery $query
-     * @return Collection
+     * @return null|Route
      */
-    public function route(RouteQuery $query): Collection
+    public function route(RouteQuery $query): ?Route
     {
         try {
             $way_points = $query->getThroughPoints()
@@ -78,7 +79,7 @@ class Yandex implements Provider
         }
 
         if (!empty($data['errors'])) {
-            return collect([]);
+            return null;
         }
 
         $result = [];
@@ -90,7 +91,7 @@ class Yandex implements Provider
             }
         }
 
-        return collect($result);
+        return new Route($this->getName(), $result);
     }
 
     /**
