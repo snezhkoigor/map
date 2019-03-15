@@ -78,7 +78,7 @@ class Yandex implements Provider
             throw InvalidServerResponse::create('Provider "' . $this->getName() . '" could not build route: "' . $query->__toString() . '".');
         }
 
-        if (!empty($data['errors'])) {
+        if (!empty($data['errors']) || empty($data['route']['legs'])) {
             return null;
         }
 
