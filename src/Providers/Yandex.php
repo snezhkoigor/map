@@ -56,6 +56,10 @@ class Yandex implements Provider
      */
     public function route(RouteQuery $query): ?Route
     {
+        if ($query->getThroughPoints()->count() < 2) {
+            return null;
+        }
+
         try {
             $way_points = $query->getThroughPoints()
                 ->transform(function ($coordinate) { return $coordinate->getLatitude() . ',' . $coordinate->getLongitude(); })
