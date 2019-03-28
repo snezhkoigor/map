@@ -175,18 +175,6 @@ class RouteQuery implements Query
     }
 
     /**
-     * @param Coordinate $point
-     * @return RouteQuery
-     */
-    public function withThroughPoint(Coordinate $point): self
-    {
-        $new = clone $this;
-        $new->through_points->push($point);
-
-        return $new;
-    }
-
-    /**
      * @param Collection $points
      * @return RouteQuery
      */
