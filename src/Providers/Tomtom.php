@@ -28,9 +28,14 @@ class Tomtom implements Provider
     private $route_key;
 
     /**
-     * @var null
+     * @var string
      */
     private $proxy;
+
+    /**
+     * @var int
+     */
+    private $proxy_port;
 
     /**
      * Базовый url для автозаполнения
@@ -42,12 +47,14 @@ class Tomtom implements Provider
      * @param $route_key
      * @param $routing_api_version
      * @param null $proxy
+     * @param int $proxy_port
      */
-    public function __construct($route_key, $routing_api_version, $proxy = null)
+    public function __construct($route_key, $routing_api_version, $proxy = null, $proxy_port = 80)
     {
         $this->route_key = $route_key;
         $this->routing_api_version = $routing_api_version;
         $this->proxy = $proxy;
+        $this->proxy_port = $proxy_port;
     }
 
     /**
@@ -80,7 +87,7 @@ class Tomtom implements Provider
                 (new Url(self::ROUTE_URL))->replace('{version}', $this->routing_api_version)->replace('{way_points}', $way_points)->getUrl(),
                 [
                     'query' => $request_data,
-                    'proxy' => $this->proxy
+                    'proxy' => !empty($this->proxy) ? $this->proxy . ':' . $this->proxy_port : null
                 ]
             );
             $data = json_decode((string)$response->getBody(), true);

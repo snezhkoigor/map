@@ -18,19 +18,24 @@ use Map\Laravel\Resources\Route;
 class Yandex implements Provider
 {
     /**
-     * @var
+     * @var string
      */
     private $routing_api_version;
 
     /**
-     * @var
+     * @var string
      */
     private $route_key;
 
     /**
-     * @var null
+     * @var string
      */
     private $proxy;
+
+    /**
+     * @var string
+     */
+    private $proxy_port;
 
     /**
      * Базовый url для автозаполнения
@@ -39,15 +44,17 @@ class Yandex implements Provider
 
     /**
      * Yandex constructor.
-     * @param $route_key
-     * @param $routing_api_version
-     * @param null $proxy
+     * @param string $route_key
+     * @param string $routing_api_version
+     * @param string $proxy
+     * @param int $proxy_port
      */
-    public function __construct($route_key, $routing_api_version, $proxy = null)
+    public function __construct($route_key, $routing_api_version, $proxy = null, $proxy_port = 80)
     {
         $this->route_key = $route_key;
         $this->routing_api_version = $routing_api_version;
         $this->proxy = $proxy;
+        $this->proxy_port = $proxy_port;
     }
 
     /**
@@ -74,7 +81,7 @@ class Yandex implements Provider
                         'mode' => $this->mapTravelMode($query),
                         'avoid_tolls' => $query->getAvoidTollsRoads()
                     ],
-                    'proxy' => $this->proxy
+                    'proxy' => !empty($this->proxy) ? $this->proxy . ':' . $this->proxy_port : null
                 ]
             );
             $data = json_decode((string)$response->getBody(), true);

@@ -187,6 +187,18 @@ class RouteQuery implements Query
     }
 
     /**
+     * @param Collection $points
+     * @return RouteQuery
+     */
+    public function withThroughPoints(Collection $points): self
+    {
+        $new = clone $this;
+        $new->through_points = $points;
+
+        return $new;
+    }
+
+    /**
      * @return Collection
      */
     public function getThroughPoints(): Collection
