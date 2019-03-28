@@ -2,9 +2,7 @@
 
 namespace Map\Laravel\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class RouteType extends Model
+final class RouteType
 {
     const ROUTE_TYPE_FASTEST = 'fastest';
 

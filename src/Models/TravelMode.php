@@ -2,9 +2,7 @@
 
 namespace Map\Laravel\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class TravelMode extends Model
+final class TravelMode
 {
     const TRAVEL_MODE_CAR = 'car';
 

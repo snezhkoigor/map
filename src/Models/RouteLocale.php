@@ -2,9 +2,7 @@
 
 namespace Map\Laravel\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class RouteLocale extends Model
+final class RouteLocale
 {
     const LOCALE_EN = 'en-US';
 
