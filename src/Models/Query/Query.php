@@ -40,14 +40,10 @@ interface Query
     public function getTraffic(): bool;
 
     /**
+     * @param bool $value
      * @return Query
      */
-    public function withAvoidTollsRoads();
-
-    /**
-     * @return Query
-     */
-    public function withoutAvoidTollsRoads();
+    public function withAvoidTollsRoads(bool $value);
 
     /**
      * @return bool
@@ -79,11 +75,11 @@ interface Query
     public function getLocale(): ?string;
 
     /**
-     * @param Coordinate $point
+     * @param Collection $points
      *
      * @return Query
      */
-    public function withThroughPoint(Coordinate $point);
+    public function withThroughPoints(Collection $points);
 
     /**
      * @return Collection

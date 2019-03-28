@@ -2,7 +2,6 @@
 
 namespace Map\Laravel\Models\Query;
 
-use Map\Laravel\Models\Coordinate;
 use Illuminate\Support\Collection;
 use Map\Laravel\Models\RouteLocale;
 use Map\Laravel\Models\RouteType;
@@ -103,23 +102,13 @@ class RouteQuery implements Query
     }
 
     /**
+     * @param bool $value
      * @return RouteQuery
      */
-    public function withAvoidTollsRoads(): self
+    public function withAvoidTollsRoads(bool $value): self
     {
         $new = clone $this;
-        $new->avoid_tolls_roads = true;
-
-        return $new;
-    }
-
-    /**
-     * @return RouteQuery
-     */
-    public function withoutAvoidTollsRoads(): self
-    {
-        $new = clone $this;
-        $new->avoid_tolls_roads = false;
+        $new->avoid_tolls_roads = $value;
 
         return $new;
     }
